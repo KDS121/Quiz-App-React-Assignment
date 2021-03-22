@@ -42,7 +42,7 @@ state = {
         }
     }
 
-    //Load the quiz once the component mounts
+    //Load the quiz once  the component mounts
     componentDidMount(){
         
         this.loadQuiz();
