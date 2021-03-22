@@ -6,10 +6,11 @@ class Quiz extends Component {
 state = {
     userAnswer:null,    //current users answer
     currentIndex:0,  //current questions index
-    options: [],       //the four options
+    options: [],       //four options
     quizEnd: false,
     score: 0,
-    disabled: true
+    disabled: true,
+    timer: 40
 }
     
 
@@ -43,7 +44,20 @@ state = {
 
     //Load the quiz once the component mounts
     componentDidMount(){
+        
         this.loadQuiz();
+        
+        setInterval(() =>{
+            const {timer} = this.state;
+            this.setState(() =>{
+                return {
+                    timer: timer -1
+                } 
+            })
+            if( timer === 0){
+                this.nextQuestionHander();
+            }     
+        }, 1000)
     }
 
     //Update the component
@@ -60,6 +74,9 @@ state = {
             });
 
         }
+
+        
+        
     }
 
     //Check the answer
@@ -81,7 +98,7 @@ state = {
     }
 
     render() {
-        const {question, options, currentIndex, userAnswer, quizEnd} = this.state //get the current state       
+        const {question, options, currentIndex, userAnswer, quizEnd, timer} = this.state //get the current state       
         if(quizEnd) {
             return (
                 <div>
@@ -103,6 +120,7 @@ state = {
             <div>
                <h2>{question}</h2>
                 <span>{`Question ${currentIndex+1} of ${QuizData.length}`}</span>
+                <span>{`timer + ${timer}`}</span>
                 {options.map(option => (  //for each option, new paragraph
                     <p key={option.id} 
                     className={`options ${userAnswer === option ? "selected" : null}`}
